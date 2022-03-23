@@ -1,0 +1,14 @@
+@import "./mixins";
+@import "./global/typography";
+
+body {
+    @include reset;
+}
+
+ul, li {
+    @include list-reset;
+}
+
+button {
+    cursor: pointer;
+}

@@ -1,0 +1,8 @@
+@import "../global/mixins";
+
+.container {
+    @include push--auto;
+    position: relative;
+    max-width: rem(1250);
+    padding: 0 rem(15);
+}
