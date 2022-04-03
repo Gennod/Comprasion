@@ -1,131 +1,224 @@
-let goods = [
-    {
-        img: "./assets/img/goods/good2.png",
-        price: "100 114,00",
-        discount: "-50%",
-        oldPrice: "200 114,00 р/шт ",
-        descr: "Магнитный держатель вывески на крючках с прям..",
-    },
-    {
-        img: "./assets/img/goods/good1.png",
-        price: "100 114,00",
-        discount: "-50%",
-        oldPrice: "200 114,00 р/шт ",
-        descr: "Магнитный держатель вывески на крючках с прям..",
-    },
-    {
-        img: "./assets/img/goods/good3.png",
-        price: "100 114,00",
-        discount: "-50%",
-        oldPrice: "200 114,00 р/шт ",
-        descr: "Магнитный держатель вывески на крючках с прям..",
-    },
-    {
-        img: "./assets/img/goods/good4.png",
-        price: "100 114,00",
-        discount: "-50%",
-        oldPrice: "200 114,00 р/шт ",
-        descr: "Магнитный держатель вывески на крючках с прям..",
-    },
-    {
-        img: "./assets/img/goods/good5.png",
-        price: "100 114,00",
-        discount: "-50%",
-        oldPrice: "200 114,00 р/шт ",
-        descr: "Магнитный держатель вывески на крючках с прям..",
-    },
-    {
-        img: "./assets/img/goods/good5.png",
-        price: "100 114,00",
-        discount: "-50%",
-        oldPrice: "200 114,00 р/шт ",
-        descr: "Магнитный держатель вывески на крючках с прям..",
-    },
-    {
-        img: "./assets/img/goods/good4.png",
-        price: "100 114,00",
-        discount: "-50%",
-        oldPrice: "200 114,00 р/шт ",
-        descr: "Магнитный держатель вывески на крючках с прям..",
-    },
-    {
-        img: "./assets/img/goods/good5.png",
-        price: "100 114,00",
-        discount: "-50%",
-        oldPrice: "200 114,00 р/шт ",
-        descr: "Магнитный держатель вывески на крючках с прям..",
-    },
-    {
-        img: "./assets/img/goods/good5.png",
-        price: "100 114,00",
-        discount: "-50%",
-        oldPrice: "200",
-        descr: "Магнитный держатель вывески на крючках с прям..",
-    },
-];
+import "./hystmodal.min";
 
-const goodsWrapper = document.querySelector(".comprasion__goods");
-
-if (goods.length === 0) {
-    goodsWrapper.innerHTML = `
-        <li class="comprasion__empty">
-            <h3 class="comprasion__empty-title">Здесь пока ничего нет</h3>
-            <div class="comprasion__empty-descr">Добавляйте товары в список сравнения<br> 
-            с помощью <img src="./assets/img/comprasion.svg" alt="comprasion" width="24" height="24"> и выберите лучший!</div>
-        </li>
-    
-    `;
-} else {
-    goods.forEach((good) => {
-        goodsWrapper.innerHTML += `
-            <li class="comprasion__good">
-				<div class="comprasion__good-top-btns">
-					<button class="comprasion__good-fix">
-						<img src="./assets/img/goods/fix.svg" alt="fix" width="18" height="18">
-					</button>
-					<div class="comprasion__good-btns-wrapper">
-						<button class="comprasion__good-favorites">
-							<img src="./assets/img/goods/favorites.svg" alt="favorites" width="18" height="18">
-						</button>
-						<button class="comprasion__good-delete">
-							<img src="./assets/img/goods/delete.svg" alt="delete" width="18" height="18">
-						</button>
-					</div>
-				</div>
-                <div class="comprasion__good-img">
-                    <img src="${good.img}" alt="good img">
-                </div>
-                <div class="comprasion__good-content">
-                    <h3 class="comprasion__good-price">${good.price} р/шт</h3>
-                    <div class="comprasion__good-discount">
-                        <span>${good.discount}</span>
-                        <h3 class="comprasion__good-price comprasion__good-price--old">${good.oldPrice}</h3>
-                    </div>
-                    <div class="comprasion__good-bottom">
-                        <div class="comprasion__good-descr">${good.descr}</div>
-                        <div class="comprasion__good-btns">
-							<button class="comprasion__good-btn" type="submit">
-								<img src="./assets/img/market.svg" alt="market" width="24" height="24">
-							</button>
-						</div>
-                    </div>
-                </div>
-            </li>
-        `;
-    });
-}
-
-goodsWrapper.addEventListener("wheel", function (event) {
-    let modifier;
-    if (event.deltaMode == event.DOM_DELTA_PIXEL) {
-        modifier = 1;
-    } else if (event.deltaMode == event.DOM_DELTA_LINE) {
-        modifier = parseInt(getComputedStyle(this).lineHeight);
-    } else if (event.deltaMode == event.DOM_DELTA_PAGE) {
-        modifier = this.clientHeight;
-    }
-    if (event.deltaY != 0) {
-        this.scrollLeft += modifier * event.deltaY;
-        event.preventDefault();
-    }
+const myModal = new HystModal({
+    linkAttributeName: "data-hystmodal",
 });
+const myModalGood = new HystModal({
+    linkAttributeName: "data-hystmodal",
+});
+
+
+
+let goodsWrapper = document.querySelector(".comprasion__goods"),
+    goodFix = document.querySelectorAll(".comprasion__good-fix"),
+    goodDelete = document.querySelectorAll(".comprasion__good-delete"),
+    goodCancel = document.querySelector(".hystmodal__btn-good--cancel"),
+    modalDelete = document.querySelector(".hystmodal__btn--delete"),
+    modalCancel = document.querySelector(".hystmodal__btn--cancel"),
+    modalTitle = document.querySelector(".hystmodal__title");
+
+// goodsWrapper.addEventListener("wheel", function (event) {
+//     let modifier;
+//     if (event.deltaMode == event.DOM_DELTA_PIXEL) {
+//         modifier = 1;
+//     } else if (event.deltaMode == event.DOM_DELTA_LINE) {
+//         modifier = parseInt(getComputedStyle(this).lineHeight);
+//     } else if (event.deltaMode == event.DOM_DELTA_PAGE) {
+//         modifier = this.clientHeight;
+//     }
+//     if (event.deltaY != 0) {
+//         this.scrollLeft += modifier * event.deltaY;
+//         event.preventDefault();
+//     }
+// });
+
+let goods = [];
+let k = 0;
+let amount = 0;
+
+
+goodFix.forEach((fix, idx) => {
+    goods.push({ fix, idx, isFixed: "false" });
+    fix.addEventListener("click", (evt) => {
+        let good = evt.currentTarget.parentNode.parentNode,
+            countGoods = 0,
+            widthToTranslate = 0,
+            fixedGoodsWidth = 0,
+            unFixedGoodsAmount = 0,
+            fixedGoodsAmount = 0;
+
+        if (goods[idx].isFixed === "true") {
+
+            
+
+            // for (let i = 0; i < goods.length; i++) {
+            //     if (goods[i].idx < goods[idx].idx) {
+            //         unFixedGoodsAmount += 1;
+            //     }
+            // }
+
+            // for (let i = 0; i < goods.length; i++) {
+            //     if (goods[i].isFixed === "true") {
+            //         fixedGoodsAmount += 1;
+            //     }
+            // }
+
+
+            
+
+            // console.log(unFixedGoodsAmount, fixedGoodsAmount);
+
+            // for (let i = 0; i < goods.length; i++) {
+            //     if (goods[i].idx <= goods[idx].idx && goods[i].isFixed === "false") {
+            //         goods[i].fix.parentNode.parentNode.style.transform += `translateX(-${good.offsetWidth + 18}px)`;
+            //     }
+            // }
+
+
+            // unFixedGoodsAmount -= 1;
+
+            goods[idx].fix.parentNode.parentNode.style.transform = `translateX(${0})`;
+
+            for (let i = 0; i < goods.length; i++) {
+                if (goods[i].idx < goods[idx].idx && goods[i].isFixed === "false") {
+                    goods[i].fix.parentNode.parentNode.style.transform += `translateX(-${good.offsetWidth}px)`;
+                }
+            }
+
+
+            good.classList.remove("comprasion__good-fix--active");
+            goods[idx].isFixed = "false";
+
+
+
+            // console.log(fixedGoodsAmount);
+            // good.style.transform = `translateX(${(good.offsetWidth + 18)*(fixedGoodsAmount - 1)}px)`;
+
+
+            // fixedGoodsAmount -= 1;
+
+            // if (goods[idx].fix.parentNode.parentNode.classList.contains("comprasion__god-fix--first")) {
+            //     for (let i = 0; i < goods.length; i++) {
+            //         if (goods[i].isFixed === "true" && !goods[i].fix.parentNode.parentNode.classList.contains("comprasion__good-fix--last")) {
+            //             goods[i].fix.parentNode.parentNode.style.transform += `translateX(-${(good.offsetWidth + 18)}px)`;
+            //         }
+            //     }
+            // }
+
+
+            // if (good.classList.contains("comprasion__god-fix--first")) {
+            //     goods[idx].fix.parentNode.parentNode.classList.remove("comprasion__god-fix--first");
+            //     k = 0;
+            // }
+            
+
+            // good.style.order = goods[idx].idx;
+            // goods[idx].isFixed = "false";
+            // good.style.transform = `translateX(0)`;
+            // good.classList.remove("comprasion__good-fix--active");
+            // for (let i = goods.length - 1; i > 0; i--) {
+            //     if (goods[i].idx <= goods[idx].idx) {
+            //         countGoods = ++countGoods;
+            //         goodsWidth += goods[i].fix.parentNode.parentNode.offsetWidth;
+            //         goods[i].fix.parentNode.parentNode.style.transform = `translateX(-${goods[i].fix.parentNode.parentNode.offsetWidth + 18}px)`;
+            //     }
+            //     if (i == 1) {
+            //         goods[i-1].fix.parentNode.parentNode.style.transform = `translateX(-${goods[i-1].fix.parentNode.parentNode.offsetWidth + 18}px)`;
+            //     }
+            // }
+        } else {
+
+            goods[idx].fix.parentNode.parentNode.classList.add("comprasion__good-fix--last");
+            
+            if (k == 0) {
+                console.log("s")
+                goods[idx].fix.parentNode.parentNode.classList.add("comprasion__good-fix--first");
+            }
+
+            k = 1;
+
+            for (let i = 0; i < goods.length; i++) {
+                if (goods[i].idx < goods[idx].idx) {
+                    unFixedGoodsAmount += 1;
+                }
+            }
+
+            for (let i = 0; i < goods.length; i++) {
+                if (goods[i].isFixed === "true") {
+                    fixedGoodsAmount += 1;
+                }
+            }
+
+            good.style.transform = `translateX(-${(good.offsetWidth)*unFixedGoodsAmount}px)`;
+
+
+            for (let i = 0; i < goods.length; i++) {
+                if (goods[i].idx < goods[idx].idx && goods[i].isFixed === "false") {
+                    goods[i].fix.parentNode.parentNode.style.transform += `translateX(${good.offsetWidth}px)`;
+                }
+            }
+
+            for (let i = 0; i < goods.length; i++) {
+                if (goods[i].isFixed === "true") {
+                    goods[i].fix.parentNode.parentNode.style.transform += `translateX(${(good.offsetWidth)}px)`;
+                }
+            }
+
+            good.classList.add("comprasion__good-fix--active");
+            goods[idx].isFixed = "true";
+
+
+            for (let i = 0; i < goods.length; i++) {
+               if (goods[i].idx <= goods[idx].idx) {
+                   amount += 1;
+               }
+           }
+
+           console.log(amount)
+
+            for (let i = 0; i < goods.length; i++) {
+                if (goods[i].isFixed === "true" &&  goods[idx].idx !== goods[i].idx) {
+                    goods[i].fix.parentNode.parentNode.classList.remove("comprasion__good-fix--last");
+                }
+            }
+        }
+    });
+});
+
+
+goodDelete.forEach(btn => {
+    btn.addEventListener("click", (evt) => {
+        let good = evt.currentTarget.parentNode.parentNode.parentNode;
+
+        document.querySelector(".hystmodal__btn-good--delete").addEventListener("click", () => {
+            good.remove();
+            myModalGood.close();
+
+            if (!document.querySelectorAll(".comprasion__good-fix").length) {
+                setTimeout(() => {
+                    window.location.href = "/no-goods.html";
+                }, 100)
+            }
+        })
+    });
+})
+
+console.log(modalCancel);
+
+modalCancel.addEventListener("click", () => {
+    myModal.close();
+})
+
+goodCancel.addEventListener("click", () => {
+    myModalGood.close();
+})
+
+modalDelete.addEventListener("click", () => {
+    goodFix.forEach(good => good.parentNode.parentNode.remove());
+    setTimeout(() => {
+        window.location.href = "/no-goods.html";
+    }, 100)
+    myModal.close();
+})
+
+

@@ -2,6 +2,7 @@ import $ from 'jquery';
 import 'what-input';
 import './components/comprasion';
 
+
 // Foundation JS relies on a global variable. In ES6, all imports are hoisted
 // to the top of the file so if we used `import` to import Foundation,
 // it would execute earlier than we have assigned the global variable.

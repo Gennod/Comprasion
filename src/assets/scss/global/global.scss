@@ -1,8 +1,14 @@
 @import "./mixins";
+@import "./global/variables";
 @import "./global/typography";
+
+html {
+	height: 100%;
+}
 
 body {
     @include reset;
+	height: 100%;
 }
 
 ul, li {
@@ -12,3 +18,83 @@ ul, li {
 button {
     cursor: pointer;
 }
+
+[type='radio'] {
+    display: none;
+}
+
+[type='checkbox'] {
+    display: none;
+}
+
+label:before {
+	content: "";
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: rem(-3);
+	left: 0;
+	bottom: 1px;
+	background: url("../img/radio-unchecked.svg") 0 0 no-repeat;
+    border-radius: 50%;
+}
+
+input[type=radio]:checked + label:before {
+	background: url("../img/radio-checked.svg") 0 0 no-repeat;
+    width: rem(20);
+    height: rem(20);
+}
+
+label {
+	display: inline-block;
+	cursor: pointer;
+	position: relative;
+	padding-left: rem(30);
+	line-height: rem($fz-normal);
+	user-select: none;
+    margin-right: 0;
+}
+
+[type='checkbox'] + label, [type='radio'] + label {
+    margin-right: rem(3);
+}
+
+input[type=radio]:disabled + label:before {
+	filter: grayscale(100%);
+}
+
+.main {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.content {
+	flex: 1 0 auto;
+	padding-bottom: rem(160);
+	
+}
+.simplebar-content {
+	display: flex;
+}
+
+.simplebar-track {
+	position: absolute;
+	bottom: 63%;
+	left: 50%;
+}
+.simplebar-scrollbar {
+	border-radius: rem(10);
+	&::before {
+		background: $color-scroll;
+	}
+}
+
+// &::-webkit-scrollbar {
+        //     width: 10px;
+        // }
+        // &::-webkit-scrollbar-thumb {
+        //     box-shadow: inset rem(50) rem(50) rem(50) $color-scroll;
+        //     border-radius: rem(10);
+        // }
