@@ -65,9 +65,11 @@
 @include motion-ui-animations;
 
 // Custom styles
-
-@import "./components/container.scss";
 @import "./global/global.scss";
+@import "./global/swiper.min.scss";
+@import "./components/item.scss";
+@import "./components/empty.scss";
+@import "./components/container.scss";
 @import "./components/header.scss";
 @import "./components/comprasion.scss";
 @import "./components/footer.scss";

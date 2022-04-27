@@ -6,44 +6,45 @@ html {
 	height: 100%;
 }
 
+
+
 body {
-    @include reset;
+	@include reset;
 	height: 100%;
 }
 
-ul, li {
-    @include list-reset;
+ul,
+li {
+	@include list-reset;
 }
 
 button {
-    cursor: pointer;
+	cursor: pointer;
 }
 
-[type='radio'] {
-    display: none;
+[type="radio"] {
+	display: none;
 }
 
-[type='checkbox'] {
-    display: none;
+.comprasion__filter-item {
+	label:before {
+		content: "";
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		position: absolute;
+		top: rem(-3);
+		left: 0;
+		bottom: 1px;
+		background: url("../img/radio-unchecked.svg") 0 0 no-repeat;
+		border-radius: 50%;
+	}
 }
 
-label:before {
-	content: "";
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	position: absolute;
-	top: rem(-3);
-	left: 0;
-	bottom: 1px;
-	background: url("../img/radio-unchecked.svg") 0 0 no-repeat;
-    border-radius: 50%;
-}
-
-input[type=radio]:checked + label:before {
+input[type="radio"]:checked + label:before {
 	background: url("../img/radio-checked.svg") 0 0 no-repeat;
-    width: rem(20);
-    height: rem(20);
+	width: rem(20);
+	height: rem(20);
 }
 
 label {
@@ -53,14 +54,14 @@ label {
 	padding-left: rem(30);
 	line-height: rem($fz-normal);
 	user-select: none;
-    margin-right: 0;
+	margin-right: 0;
 }
 
-[type='checkbox'] + label, [type='radio'] + label {
-    margin-right: rem(3);
+[type="radio"] + label {
+	margin-right: rem(3);
 }
 
-input[type=radio]:disabled + label:before {
+input[type="radio"]:disabled + label:before {
 	filter: grayscale(100%);
 }
 
@@ -73,7 +74,6 @@ input[type=radio]:disabled + label:before {
 .content {
 	flex: 1 0 auto;
 	padding-bottom: rem(160);
-	
 }
 .simplebar-content {
 	display: flex;
@@ -87,14 +87,29 @@ input[type=radio]:disabled + label:before {
 .simplebar-scrollbar {
 	border-radius: rem(10);
 	&::before {
-		background: $color-scroll;
+		background: red;
 	}
 }
 
 // &::-webkit-scrollbar {
-        //     width: 10px;
-        // }
-        // &::-webkit-scrollbar-thumb {
-        //     box-shadow: inset rem(50) rem(50) rem(50) $color-scroll;
-        //     border-radius: rem(10);
-        // }
+//     width: 10px;
+// }
+// &::-webkit-scrollbar-thumb {
+//     box-shadow: inset rem(50) rem(50) rem(50) $color-scroll;
+//     border-radius: rem(10);
+// }
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.visually-hidden {
+	position: absolute;
+	clip: rect(1px, 1px, 1px, 1px);
+	padding: 0;
+	border: 0;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+}

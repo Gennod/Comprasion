@@ -1,12 +1,5 @@
 import "./hystmodal.min";
-
-const myModal = new HystModal({
-    linkAttributeName: "data-hystmodal",
-});
-const myModalGood = new HystModal({
-    linkAttributeName: "data-hystmodal",
-});
-
+import Swiper from "swiper/bundle";
 
 
 let goodsWrapper = document.querySelector(".comprasion__goods"),
@@ -17,173 +10,141 @@ let goodsWrapper = document.querySelector(".comprasion__goods"),
     modalCancel = document.querySelector(".hystmodal__btn--cancel"),
     modalTitle = document.querySelector(".hystmodal__title");
 
-// goodsWrapper.addEventListener("wheel", function (event) {
-//     let modifier;
-//     if (event.deltaMode == event.DOM_DELTA_PIXEL) {
-//         modifier = 1;
-//     } else if (event.deltaMode == event.DOM_DELTA_LINE) {
-//         modifier = parseInt(getComputedStyle(this).lineHeight);
-//     } else if (event.deltaMode == event.DOM_DELTA_PAGE) {
-//         modifier = this.clientHeight;
-//     }
-//     if (event.deltaY != 0) {
-//         this.scrollLeft += modifier * event.deltaY;
-//         event.preventDefault();
-//     }
-// });
+function checkItemsCount() {
+    const comprasion = document.querySelector('.comprasion');
+    const table = comprasion.querySelector('.table');
+    const filter = comprasion.querySelector('.comprasion__filter');
+    const differences = comprasion.querySelector('.comprasion__differences');
+    const items = comprasion.querySelectorAll('.item');
 
-let goods = [];
-let k = 0;
-let amount = 0;
+    switch (items.length) {
+        case 0:
+            comprasion.classList.add('empty-cart');
+            break
+        case 1:
+            table.style.display = 'none';
+            filter.style.display = 'none';
+            differences.style.display = 'none';
+            addLinkEmptyItem();
+    }
+}
 
+function addLinkEmptyItem() {
+    const emptyItemLink = `
+                <article class="swiper-slide item item--empty">
+                    <a href="#" class="item__wrapper">
+                        <div class="item__decor"></div>
+                        <p class="item__text">
+                            Добавьте еще товаров для сравнения
+                        </p>
+                    </a>
+                </article>
+            `
 
-goodFix.forEach((fix, idx) => {
-    goods.push({ fix, idx, isFixed: "false" });
-    fix.addEventListener("click", (evt) => {
-        let good = evt.currentTarget.parentNode.parentNode,
-            countGoods = 0,
-            widthToTranslate = 0,
-            fixedGoodsWidth = 0,
-            unFixedGoodsAmount = 0,
-            fixedGoodsAmount = 0;
+    const itemsContainer = document.querySelector('.comprasion__items-wrapper');
+    itemsContainer.insertAdjacentHTML('beforeend', emptyItemLink);
+}
 
-        if (goods[idx].isFixed === "true") {
+checkItemsCount();
 
-            
+localStorage.clear();
 
-            // for (let i = 0; i < goods.length; i++) {
-            //     if (goods[i].idx < goods[idx].idx) {
-            //         unFixedGoodsAmount += 1;
-            //     }
-            // }
-
-            // for (let i = 0; i < goods.length; i++) {
-            //     if (goods[i].isFixed === "true") {
-            //         fixedGoodsAmount += 1;
-            //     }
-            // }
-
-
-            
-
-            // console.log(unFixedGoodsAmount, fixedGoodsAmount);
-
-            // for (let i = 0; i < goods.length; i++) {
-            //     if (goods[i].idx <= goods[idx].idx && goods[i].isFixed === "false") {
-            //         goods[i].fix.parentNode.parentNode.style.transform += `translateX(-${good.offsetWidth + 18}px)`;
-            //     }
-            // }
-
-
-            // unFixedGoodsAmount -= 1;
-
-            goods[idx].fix.parentNode.parentNode.style.transform = `translateX(${0})`;
-
-            for (let i = 0; i < goods.length; i++) {
-                if (goods[i].idx < goods[idx].idx && goods[i].isFixed === "false") {
-                    goods[i].fix.parentNode.parentNode.style.transform += `translateX(-${good.offsetWidth}px)`;
-                }
-            }
-
-
-            good.classList.remove("comprasion__good-fix--active");
-            goods[idx].isFixed = "false";
-
-
-
-            // console.log(fixedGoodsAmount);
-            // good.style.transform = `translateX(${(good.offsetWidth + 18)*(fixedGoodsAmount - 1)}px)`;
-
-
-            // fixedGoodsAmount -= 1;
-
-            // if (goods[idx].fix.parentNode.parentNode.classList.contains("comprasion__god-fix--first")) {
-            //     for (let i = 0; i < goods.length; i++) {
-            //         if (goods[i].isFixed === "true" && !goods[i].fix.parentNode.parentNode.classList.contains("comprasion__good-fix--last")) {
-            //             goods[i].fix.parentNode.parentNode.style.transform += `translateX(-${(good.offsetWidth + 18)}px)`;
-            //         }
-            //     }
-            // }
-
-
-            // if (good.classList.contains("comprasion__god-fix--first")) {
-            //     goods[idx].fix.parentNode.parentNode.classList.remove("comprasion__god-fix--first");
-            //     k = 0;
-            // }
-            
-
-            // good.style.order = goods[idx].idx;
-            // goods[idx].isFixed = "false";
-            // good.style.transform = `translateX(0)`;
-            // good.classList.remove("comprasion__good-fix--active");
-            // for (let i = goods.length - 1; i > 0; i--) {
-            //     if (goods[i].idx <= goods[idx].idx) {
-            //         countGoods = ++countGoods;
-            //         goodsWidth += goods[i].fix.parentNode.parentNode.offsetWidth;
-            //         goods[i].fix.parentNode.parentNode.style.transform = `translateX(-${goods[i].fix.parentNode.parentNode.offsetWidth + 18}px)`;
-            //     }
-            //     if (i == 1) {
-            //         goods[i-1].fix.parentNode.parentNode.style.transform = `translateX(-${goods[i-1].fix.parentNode.parentNode.offsetWidth + 18}px)`;
-            //     }
-            // }
-        } else {
-
-            goods[idx].fix.parentNode.parentNode.classList.add("comprasion__good-fix--last");
-            
-            if (k == 0) {
-                console.log("s")
-                goods[idx].fix.parentNode.parentNode.classList.add("comprasion__good-fix--first");
-            }
-
-            k = 1;
-
-            for (let i = 0; i < goods.length; i++) {
-                if (goods[i].idx < goods[idx].idx) {
-                    unFixedGoodsAmount += 1;
-                }
-            }
-
-            for (let i = 0; i < goods.length; i++) {
-                if (goods[i].isFixed === "true") {
-                    fixedGoodsAmount += 1;
-                }
-            }
-
-            good.style.transform = `translateX(-${(good.offsetWidth)*unFixedGoodsAmount}px)`;
-
-
-            for (let i = 0; i < goods.length; i++) {
-                if (goods[i].idx < goods[idx].idx && goods[i].isFixed === "false") {
-                    goods[i].fix.parentNode.parentNode.style.transform += `translateX(${good.offsetWidth}px)`;
-                }
-            }
-
-            for (let i = 0; i < goods.length; i++) {
-                if (goods[i].isFixed === "true") {
-                    goods[i].fix.parentNode.parentNode.style.transform += `translateX(${(good.offsetWidth)}px)`;
-                }
-            }
-
-            good.classList.add("comprasion__good-fix--active");
-            goods[idx].isFixed = "true";
-
-
-            for (let i = 0; i < goods.length; i++) {
-               if (goods[i].idx <= goods[idx].idx) {
-                   amount += 1;
-               }
-           }
-
-           console.log(amount)
-
-            for (let i = 0; i < goods.length; i++) {
-                if (goods[i].isFixed === "true" &&  goods[idx].idx !== goods[i].idx) {
-                    goods[i].fix.parentNode.parentNode.classList.remove("comprasion__good-fix--last");
-                }
-            }
-        }
-    });
+var tableScroll = new Swiper(".table__scroll", {
+    slidesPerView: 'auto',
+    freeMode: true,
+    watchSlidesVisibility: true,
+    watchSlidesProgress: true,
+    scrollbar: {
+        el: ".comprasion__scrollbar",
+        draggable: true,
+    },
+    allowTouchMove: false,
 });
+
+var comprasionSlider = new Swiper(".comprasion__items-container", {
+    freeMode: true,
+    watchSlidesProgress: true,
+    watchSlidesVisibility: true,
+    slidesPerView: 'auto',
+    scrollbar: {
+        el: ".comprasion__scrollbar",
+        draggable: true,
+    },
+    allowTouchMove: false,
+});
+
+function blockLastItem() {
+    const items = document.querySelectorAll('.item');
+    const pinItems = document.querySelectorAll('.item.pin');
+    if (items.length === pinItems.length + 1) {
+        return true;
+    }
+    return false;
+}
+
+function calculatePositionPinItems(elWrap) {
+    const itemsPin = elWrap.querySelectorAll('.pin');
+    itemsPin.forEach((el, index) => {
+        el.style.left = `${el.offsetWidth * index}px`;
+    })
+}
+
+function calculatePositionItem(el, elWrap, slider) {
+    const pinItem = el.querySelector('.item__btn--pin');
+
+    if (el.classList.contains('pin')) {
+        if (pinItem) pinItem.classList.remove('active');
+        el.style.zIndex++;
+        const itemLocalPos = localStorage.getItem(`${el.getAttribute('data-id')}`);
+        el.style.left = `${itemLocalPos}px`;
+        elWrap.style.paddingLeft = `${checkCountPinItems() - el.offsetWidth}px`;
+        setTimeout(() => {
+            el.classList.remove('pin');
+            calculatePositionPinItems(elWrap);
+            el.style.left = `auto`;
+        }, 500)
+        return
+    }
+
+    if (blockLastItem()) return;
+
+    localStorage.setItem(`${el.getAttribute('data-id')}`, `${el.offsetLeft}`);
+    if (pinItem) pinItem.classList.add('active');
+    el.style.left = `${el.offsetLeft}px`;
+    el.classList.add('pin');
+    el.style.zIndex++;
+    setTimeout(() => {
+        el.style.left = `${checkCountPinItems() - el.offsetWidth}px`;
+        elWrap.style.paddingLeft = `${checkCountPinItems()}px`;
+        setTimeout(() => {
+            slider.update();
+        }, 500);
+    }, 100);
+}
+
+function pinItem(slider, table) {
+    event.preventDefault();
+    const tableWrap = document.querySelector('.table__scroll-wrap');
+    const sliderWrap = document.querySelector('.comprasion__items-wrapper');
+    const item = event.target.closest('.item');
+    const itemStats = document.querySelector(`.table__stats[data-id="${item.getAttribute('data-id')}"]`);
+
+    calculatePositionItem(item, sliderWrap, slider);
+    calculatePositionItem(itemStats, tableWrap, table);
+}
+
+function checkCountPinItems() {
+    const itemsPin = document.querySelectorAll('.item.pin');
+    const result = itemsPin[0].offsetWidth * itemsPin.length;
+    return result;
+}
+
+const itemsPinBtn = document.querySelectorAll('.item__btn--pin');
+if (itemsPinBtn) {
+    itemsPinBtn.forEach((el) => {
+        el.addEventListener('click', () => pinItem(comprasionSlider, tableScroll))
+    })
+}
 
 
 goodDelete.forEach(btn => {
@@ -205,6 +166,17 @@ goodDelete.forEach(btn => {
 
 console.log(modalCancel);
 
+const myModal = new HystModal({
+    linkAttributeName: "data-hystmodal",
+});
+const myModalGood = new HystModal({
+    linkAttributeName: "data-hystmodal",
+});
+
+document.querySelector("[data-hystmodal='#myModal']").addEventListener("click", () => {
+    let clientScroll = window.pageYOffset;
+})
+
 modalCancel.addEventListener("click", () => {
     myModal.close();
 })
@@ -213,12 +185,29 @@ goodCancel.addEventListener("click", () => {
     myModalGood.close();
 })
 
-modalDelete.addEventListener("click", () => {
+modalDelete.addEventListener("click", (e) => {
     goodFix.forEach(good => good.parentNode.parentNode.remove());
     setTimeout(() => {
         window.location.href = "/no-goods.html";
     }, 100)
     myModal.close();
 })
+
+function toggleSameStats() {
+    const sameStats = document.querySelectorAll('.js-sameStats');
+    sameStats.forEach((el) => {
+        if (!el.classList.contains('hidden')) {
+            el.classList.add('hidden');
+            el.style.maxHeight = '0';
+            return
+        }
+
+        el.style.maxHeight = `${el.scrollHeight}px`;
+        el.classList.remove('hidden');
+    })
+}
+
+const differencesCheckbox = document.querySelector('#differences');
+differencesCheckbox.addEventListener('change', toggleSameStats)
 
 
